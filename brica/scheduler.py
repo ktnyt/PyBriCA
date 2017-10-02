@@ -45,6 +45,7 @@ class Scheduler(object):
             component.expose_output()
 
         assert(len(args) == len(self.circuit.in_ports))
+
         for i, arg in enumerate(args):
             self.circuit.in_ports[i].send(arg)
 
@@ -53,3 +54,5 @@ class Scheduler(object):
 
         for component in awake:
             component.fire()
+
+        return self.circuit.out_port.recv()
