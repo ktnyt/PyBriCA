@@ -34,6 +34,8 @@ class ROSAdapter(object):
         self.publisher = rospy.Publisher(output, Int16MultiArray, queue_size=10)
 
         def watcher(data):
+            if data is None:
+                return
             msg = Int16MultiArray()
             msg.data = data
             msg.layout = gen_layout(data.shape)
