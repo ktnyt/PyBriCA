@@ -16,21 +16,21 @@ def gen_layout(shape):
     layout.data_offset = 0
     return layout
 
+def callback(messager):
+    def handle(msg):
+        shape = [dim.size for dim in msg.layout.dim]
+        array = np.array(msg.data, dtype=np.int16).reshape(shape)
+        messager.send(array)
+    return handle
+
 class ROSAdapter(object):
     def __init__(self, circuit, inputs, output):
         self.circuit = circuit
 
         self.subscribers = []
-        self.callbacks = []
 
         for i, topic in enumerate(inputs):
-            def callback(msg):
-                shape = [dim.size for dim in msg.layout.dim]
-                array = np.array(msg.data, dtype=np.int16).reshape(shape)
-                self.circuit.in_ports[i].send(array)
-
-            self.callbacks.append(callback)
-            sub = rospy.Subscriber(topic, Int16MultiArray, self.callbacks[i])
+            sub = rospy.Subscriber(topic, Int16MultiArray, callback(self.circuit.in_ports[i]))
             self.subscribers.append(sub)
 
         self.publisher = rospy.Publisher(output, Int16MultiArray, queue_size=10)
@@ -41,7 +41,7 @@ class ROSAdapter(object):
             msg = Int16MultiArray()
             msg.data = data
             msg.layout = gen_layout(data.shape)
-            self.publisher.pub(msg)
+            self.publisher.publish(msg)
 
         self.circuit.out_port.watch(watcher)
 
