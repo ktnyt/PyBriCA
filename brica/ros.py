@@ -31,7 +31,7 @@ class ROSAdapter(object):
             sub = rospy.Subscriber(topic, Int16MultiArray, callback)
             self.subscribers.append(sub)
 
-        self.publisher = rospy.Publisher(output, anonymous=True)
+        self.publisher = rospy.Publisher(output, Int16MultiArray, queue_size=10)
 
         def watcher(data):
             msg = Int16MultiArray()
