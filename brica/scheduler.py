@@ -1,4 +1,4 @@
-import queue
+from six.moves import queue
 
 class Scheduler(object):
     class Event(object):

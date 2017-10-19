@@ -8,4 +8,8 @@ setup(name='PyBriCA',
       author_email='kotone [at] sfc.keio.ac.jp',
       license='Apache',
       packages=['brica'],
+      install_requires=[
+          'six',
+          'funcsigs',
+      ],
       zip_safe=True)
