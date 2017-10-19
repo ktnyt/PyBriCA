@@ -21,6 +21,7 @@ class ROSAdapter(object):
         self.circuit = circuit
 
         self.subscribers = []
+        self.callbacks = []
 
         for i, topic in enumerate(inputs):
             def callback(msg):
@@ -28,7 +29,8 @@ class ROSAdapter(object):
                 array = np.array(msg.data, dtype=np.int16).reshape(shape)
                 self.circuit.in_ports[i].send(array)
 
-            sub = rospy.Subscriber(topic, Int16MultiArray, callback)
+            self.callbacks.append(callback)
+            sub = rospy.Subscriber(topic, Int16MultiArray, self.callbacks[i])
             self.subscribers.append(sub)
 
         self.publisher = rospy.Publisher(output, Int16MultiArray, queue_size=10)
