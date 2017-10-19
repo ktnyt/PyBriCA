@@ -39,7 +39,7 @@ class ROSAdapter(object):
             msg.layout = gen_layout(data.shape)
             self.publisher.pub(msg)
 
-        self.ciruit.out_port.watch(watcher)
+        self.circuit.out_port.watch(watcher)
 
     @property
     def components(self):
