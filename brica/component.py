@@ -1,4 +1,7 @@
-from inspect import signature, Signature, Parameter
+try:
+    from inspect import signature, Signature, Parameter
+except:
+    from funcsigs import signature, Signature, Parameter
 
 from brica import messager
 
