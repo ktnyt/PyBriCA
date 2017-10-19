@@ -22,7 +22,7 @@ class Scheduler(object):
                 True,
             ))
 
-    def next(self, *args):
+    def next(self):
         time = self.event_queue.queue[0].time
 
         awake = []
@@ -44,15 +44,19 @@ class Scheduler(object):
         for component in asleep:
             component.expose_output()
 
-        assert(len(args) == len(self.circuit.in_ports))
-
-        for i, arg in enumerate(args):
-            self.circuit.in_ports[i].send(arg)
-
         for component in awake:
             component.collect_input()
 
         for component in awake:
             component.fire()
+        
+
+    def __call__(self, *args):
+        assert(len(args) == len(self.circuit.in_ports))
+
+        for i, arg in enumerate(args):
+            self.circuit.in_ports[i].send(arg)
+
+        self.next()
 
         return self.circuit.out_port.recv()
