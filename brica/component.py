@@ -58,7 +58,8 @@ class Component(object):
             self.in_ports[i] = target.out_port
 
     def fire(self):
-        self.output = self(*self.inputs)
+        self.output = self.f(*self.inputs)
 
-    def __call__(self, *args):
-        return self.f(*args)
+    def __call__(self, *targets):
+        self.connect(targets)
+        return self
