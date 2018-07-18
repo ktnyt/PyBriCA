@@ -20,7 +20,7 @@ AUTHOR = 'Kotone Itaya'
 REQUIRES_PYTHON = '>=3.6.0'
 VERSION = None
 
-REQUIRED = []
+REQUIRED = ["six"]
 
 EXTRAS = {}
 

@@ -14,7 +14,6 @@ class Scheduler(object):
         self.event_queue = queue.PriorityQueue()
 
         for component in components:
-            component = components[name]
             self.event_queue.put(Scheduler.Event(
                 component.offset,
                 component,
