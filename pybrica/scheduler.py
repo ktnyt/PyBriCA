@@ -10,12 +10,11 @@ class Scheduler(object):
         def __lt__(self, other):
             return self.time < other.time
 
-    def __init__(self, circuit):
-        self.circuit = circuit
+    def __init__(self, *components):
         self.event_queue = queue.PriorityQueue()
 
-        for name in circuit.components:
-            component = circuit.components[name]
+        for component in components:
+            component = components[name]
             self.event_queue.put(Scheduler.Event(
                 component.offset,
                 component,
@@ -49,14 +48,3 @@ class Scheduler(object):
 
         for component in awake:
             component.fire()
-        
-
-    def __call__(self, *args):
-        assert(len(args) == len(self.circuit.in_ports))
-
-        for i, arg in enumerate(args):
-            self.circuit.in_ports[i].send(arg)
-
-        self.next()
-
-        return self.circuit.out_port.recv()
