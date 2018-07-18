@@ -3,7 +3,7 @@ try:
 except:
     from funcsigs import signature, Signature, Parameter
 
-from brica import messager
+from pybrica import messager
 
 class Component(object):
     def __init__(self, f, interval=1000, offset=0, sleep=0):
